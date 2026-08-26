@@ -1,0 +1,12 @@
+venv/
+tools/
+__pycache__/
+*.pyc
+
+# Large generated artifacts
+output/extracted/
+output/chroma_db/
+output/chunks.jsonl
+output/*.log
+output/*.err
+reports/*.json

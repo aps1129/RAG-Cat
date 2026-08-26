@@ -1,0 +1,257 @@
+{
+  "_README": {
+    "purpose": "Hand-built retrieval eval set for the CAT prep RAG pipeline.",
+    "method": "Each question was written AFTER reading a real chunk in the indexed corpus, so the ground truth is verified to exist rather than assumed. Questions are phrased the way a CAT aspirant would ask them, not as keyword queries copied from the source text.",
+    "fields": {
+      "id": "stable identifier",
+      "section": "CAT section this belongs to (QA / DILR / VARC / GK)",
+      "topic": "finer-grained topic tag",
+      "question": "the natural-language query issued to the retriever",
+      "must_contain_any": "content check - a retrieved chunk must contain at least one of these strings (case-insensitive) for the item to count as a content hit. Kept deliberately short and non-verbatim so the check rewards finding the right MATERIAL, not string-matching the question.",
+      "expected_source_any": "source check - path fragments; a hit means at least one retrieved chunk came from one of these documents. Multiple entries are allowed because the same concept is legitimately taught in several books."
+    },
+    "metrics": "hit@k is reported separately for the content check and the source check. Content hit rate is the primary number: it measures whether the retrieved context could actually answer the question."
+  },
+  "items": [
+    {
+      "id": "qa-01",
+      "section": "QA",
+      "topic": "Number System - trailing zeros",
+      "question": "How do I count the number of trailing zeros at the end of a factorial?",
+      "must_contain_any": ["trailing zero", "number of 5", "power of 5"],
+      "expected_source_any": ["Takshzila NumberSystems", "Number System", "Quantum CAT", "QA 8th"]
+    },
+    {
+      "id": "qa-02",
+      "section": "QA",
+      "topic": "Number System - remainders",
+      "question": "If I cancel a common factor from the numerator and denominator, what happens to the remainder?",
+      "must_contain_any": ["remainder", "divided by"],
+      "expected_source_any": ["Arun Sharma", "Quantum CAT", "Number System"]
+    },
+    {
+      "id": "qa-03",
+      "section": "QA",
+      "topic": "Number System - HCF and LCM",
+      "question": "What is the relationship between the HCF and LCM of two numbers and their product?",
+      "must_contain_any": ["HCF", "LCM"],
+      "expected_source_any": ["Cracku Formula", "Number System", "Quantum CAT", "QA 8th"]
+    },
+    {
+      "id": "qa-04",
+      "section": "QA",
+      "topic": "Time and Work - negative work",
+      "question": "If one person is building a wall while another is destroying it, how do I calculate the time taken?",
+      "must_contain_any": ["negative work", "destroy", "break the wall"],
+      "expected_source_any": ["Arun Sharma", "Quantum CAT", "Trishna", "Nishit"]
+    },
+    {
+      "id": "qa-05",
+      "section": "QA",
+      "topic": "Mixtures - successive replacement",
+      "question": "A container of wine has some drawn off and replaced with water repeatedly. What is the shortcut formula for the final quantity?",
+      "must_contain_any": ["replacement", "removal", "final quantity", "wine"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-06",
+      "section": "QA",
+      "topic": "Partnership - profit share",
+      "question": "How is profit shared between partners who invest different amounts for different durations?",
+      "must_contain_any": ["profit share", "investment", "duration"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Trishna", "Quantum CAT"]
+    },
+    {
+      "id": "qa-07",
+      "section": "QA",
+      "topic": "Ratio and Proportion",
+      "question": "What is the quickest way to divide a number in a given ratio like 2 to 3?",
+      "must_contain_any": ["ratio", "total parts", "divide"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Trishna", "Quantum CAT"]
+    },
+    {
+      "id": "qa-08",
+      "section": "QA",
+      "topic": "Percentages - successive change",
+      "question": "If the price of an item falls by the same percentage every year, how do I find its value after n years?",
+      "must_contain_any": ["decrease", "every year", "percentage", "successive"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-09",
+      "section": "QA",
+      "topic": "Permutation and Combination",
+      "question": "In how many ways can the letters of a word be arranged if repetition is allowed?",
+      "must_contain_any": ["repetition", "arrange", "permutation"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-10",
+      "section": "QA",
+      "topic": "Counting - addition rule",
+      "question": "When do I add the number of ways instead of multiplying them in counting problems?",
+      "must_contain_any": ["number of ways", "not dependent", "addition"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-11",
+      "section": "QA",
+      "topic": "Compound Interest",
+      "question": "How does compound interest differ from simple interest when interest is added to the principal each period?",
+      "must_contain_any": ["compound", "principal", "interest"],
+      "expected_source_any": ["Arun Sharma", "Quantum CAT", "Trishna", "Nishit"]
+    },
+    {
+      "id": "qa-12",
+      "section": "QA",
+      "topic": "Alligation",
+      "question": "In what ratio should two mixtures be combined to get a mixture of a required price?",
+      "must_contain_any": ["alligation", "mixture", "ratio"],
+      "expected_source_any": ["100 Shortcuts", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-13",
+      "section": "QA",
+      "topic": "Time Speed Distance",
+      "question": "What concepts from time speed and distance are used for trains, boats and circular tracks?",
+      "must_contain_any": ["speed", "distance", "circular", "boats"],
+      "expected_source_any": ["Nishit", "Arun Sharma", "Quantum CAT", "Trishna"]
+    },
+    {
+      "id": "qa-14",
+      "section": "QA",
+      "topic": "Divisibility",
+      "question": "What are the divisibility rules I should memorise for the number system section?",
+      "must_contain_any": ["divisibility", "divisible"],
+      "expected_source_any": ["Cracku Formula", "Number System", "Takshzila", "Quantum CAT"]
+    },
+    {
+      "id": "qa-15",
+      "section": "QA",
+      "topic": "Progressions",
+      "question": "How do I find the sum of an arithmetic progression?",
+      "must_contain_any": ["arithmetic progression", "common difference", "sum of"],
+      "expected_source_any": ["Arun Sharma", "Quantum CAT", "Trishna", "Nishit", "Takshzila"]
+    },
+    {
+      "id": "qa-16",
+      "section": "QA",
+      "topic": "Geometry and Mensuration",
+      "question": "What formulas do I need for surface area and volume of a cylinder and sphere?",
+      "must_contain_any": ["volume", "surface area", "cylinder", "sphere"],
+      "expected_source_any": ["Arun Sharma", "Quantum CAT", "Trishna", "Nishit", "CAT PYQs"]
+    },
+    {
+      "id": "dilr-01",
+      "section": "DILR",
+      "topic": "Games and Tournaments",
+      "question": "How do I approach a games and tournaments problem with a points table?",
+      "must_contain_any": ["tournament", "points", "matches"],
+      "expected_source_any": ["LRDI", "DI chapter", "Trishna", "Nishit", "OSWAL", "Arun Sharma"]
+    },
+    {
+      "id": "dilr-02",
+      "section": "DILR",
+      "topic": "Binary Logic",
+      "question": "How do I solve binary logic puzzles where people make true and false statements?",
+      "must_contain_any": ["binary logic", "truth", "true", "false"],
+      "expected_source_any": ["Arun Sharma", "Nishit", "Trishna", "LRDI"]
+    },
+    {
+      "id": "dilr-03",
+      "section": "DILR",
+      "topic": "Seating Arrangement",
+      "question": "What is the method for solving a linear seating arrangement problem with people facing different directions?",
+      "must_contain_any": ["arrangement", "seating", "facing"],
+      "expected_source_any": ["Face to Face", "Arun Sharma", "Nishit", "Trishna", "LRDI"]
+    },
+    {
+      "id": "dilr-04",
+      "section": "DILR",
+      "topic": "Venn Diagrams / Set Theory",
+      "question": "How are Venn diagrams used to solve set theory questions about overlapping groups?",
+      "must_contain_any": ["venn", "set theory", "sets"],
+      "expected_source_any": ["Arun Sharma", "Nishit", "Trishna", "LRDI", "OSWAL"]
+    },
+    {
+      "id": "dilr-05",
+      "section": "DILR",
+      "topic": "Data Sufficiency",
+      "question": "In data sufficiency questions, when is a single statement alone enough to answer?",
+      "must_contain_any": ["data sufficiency", "sufficient", "statement"],
+      "expected_source_any": ["Data Sufficincy", "LRDI", "GMAT", "Arun Sharma", "CAT PYQs"]
+    },
+    {
+      "id": "dilr-06",
+      "section": "DILR",
+      "topic": "Number Series",
+      "question": "How do I identify the pattern in a number series based on squares and cubes?",
+      "must_contain_any": ["series", "squares", "cubes"],
+      "expected_source_any": ["Arun Sharma", "Nishit", "Trishna", "LRDI"]
+    },
+    {
+      "id": "varc-01",
+      "section": "VARC",
+      "topic": "Para Jumbles",
+      "question": "What is the strategy for solving para jumble questions and finding the opening sentence?",
+      "must_contain_any": ["jumble", "sentence", "paragraph"],
+      "expected_source_any": ["Face to Face", "PARA JUMBLE", "Parajumble", "CAT PYQs", "VARC", "CL Practice Sheets"]
+    },
+    {
+      "id": "varc-02",
+      "section": "VARC",
+      "topic": "Subject-Verb Agreement",
+      "question": "What are common subject verb agreement errors to spot in grammar questions?",
+      "must_contain_any": ["subject-verb", "subject verb", "agreement", "verb"],
+      "expected_source_any": ["Grammar", "VA-17", "CL Practice Sheets", "English"]
+    },
+    {
+      "id": "varc-03",
+      "section": "VARC",
+      "topic": "Critical Reasoning - assumptions",
+      "question": "How do I identify the assumption underlying an argument in critical reasoning?",
+      "must_contain_any": ["assumption", "argument", "conclusion"],
+      "expected_source_any": ["CR 101", "GMAT", "Arun Sharma", "VARC", "1000 CR"]
+    },
+    {
+      "id": "varc-04",
+      "section": "VARC",
+      "topic": "Analogy / Word Relationships",
+      "question": "How do I solve word analogy questions by building a bridge between the word pair?",
+      "must_contain_any": ["analogy", "relationship", "pair"],
+      "expected_source_any": ["NMAT", "Vocabulary", "English", "VARC", "CAT PYQs"]
+    },
+    {
+      "id": "varc-05",
+      "section": "VARC",
+      "topic": "Syllogisms",
+      "question": "What is the correct way to draw conclusions from syllogism statements?",
+      "must_contain_any": ["syllogism", "conclusion", "statement"],
+      "expected_source_any": ["Arun Sharma", "Nishit", "Trishna", "LRDI", "VARC"]
+    },
+    {
+      "id": "gk-01",
+      "section": "GK",
+      "topic": "Static GK",
+      "question": "Which static GK topics are important for the XAT and TISSNET general knowledge section?",
+      "must_contain_any": ["general knowledge", "GK", "static"],
+      "expected_source_any": ["Static Gk", "TISSNET", "Arihant GK", "XAT"]
+    },
+    {
+      "id": "meta-01",
+      "section": "QA",
+      "topic": "Exam structure",
+      "question": "How much time is allotted to the quantitative aptitude section in CAT and what topics does it cover?",
+      "must_contain_any": ["40 minutes", "Quantitative Aptitude", "section"],
+      "expected_source_any": ["OSWAL", "CAT PYQs", "Trishna", "IMS", "TIME Material"]
+    },
+    {
+      "id": "meta-02",
+      "section": "DILR",
+      "topic": "Exam structure",
+      "question": "What kinds of chapters appear in the data interpretation section, like pie charts and bar charts?",
+      "must_contain_any": ["pie chart", "bar chart", "data table"],
+      "expected_source_any": ["CAT PYQs", "OSWAL", "DI chapter", "Trishna", "TIME Material"]
+    }
+  ]
+}

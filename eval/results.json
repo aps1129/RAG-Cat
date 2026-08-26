@@ -1,0 +1,900 @@
+{
+  "k": 3,
+  "n_questions": 30,
+  "content_hit_rate": 1.0,
+  "source_hit_rate": 0.8,
+  "by_section": {
+    "QA": {
+      "n": 17,
+      "content": 17,
+      "source": 14
+    },
+    "DILR": {
+      "n": 7,
+      "content": 7,
+      "source": 7
+    },
+    "VARC": {
+      "n": 5,
+      "content": 5,
+      "source": 2
+    },
+    "GK": {
+      "n": 1,
+      "content": 1,
+      "source": 1
+    }
+  },
+  "records": [
+    {
+      "id": "qa-01",
+      "section": "QA",
+      "topic": "Number System - trailing zeros",
+      "question": "How do I count the number of trailing zeros at the end of a factorial?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8592506647109985,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Unacademy_/QA/Number System 1.pdf",
+          "page_start": 16,
+          "score": 0.8593,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 44,
+          "score": 0.8584,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Unacademy_/QA/Number System 1.pdf",
+          "page_start": 14,
+          "score": 0.821,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-02",
+      "section": "QA",
+      "topic": "Number System - remainders",
+      "question": "If I cancel a common factor from the numerator and denominator, what happens to the remainder?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7852112054824829,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/QUANTUM CAT By Sarvesh Verma.pdf",
+          "page_start": 1,
+          "score": 0.7852,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 105,
+          "score": 0.7815,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
+          "page_start": 121,
+          "score": 0.7715,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-03",
+      "section": "QA",
+      "topic": "Number System - HCF and LCM",
+      "question": "What is the relationship between the HCF and LCM of two numbers and their product?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.865821361541748,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-1_/4 CATapult Courseware Module 1-QA.pdf",
+          "page_start": 45,
+          "score": 0.8658,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/The number systeme book.pdf",
+          "page_start": 38,
+          "score": 0.8537,
+          "chunk_type": "table"
+        },
+        {
+          "source_file": "Prep Club/QA/Maths.pdf",
+          "page_start": 7,
+          "score": 0.8501,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-04",
+      "section": "QA",
+      "topic": "Time and Work - negative work",
+      "question": "If one person is building a wall while another is destroying it, how do I calculate the time taken?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7868022322654724,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/QR.pdf",
+          "page_start": 15,
+          "score": 0.7868,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 359,
+          "score": 0.7745,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/TG - TSD.pdf",
+          "page_start": 1,
+          "score": 0.7512,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-05",
+      "section": "QA",
+      "topic": "Mixtures - successive replacement",
+      "question": "A container of wine has some drawn off and replaced with water repeatedly. What is the shortcut formula for the final quantity?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8019370436668396,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/100 Shortcuts.pdf",
+          "page_start": 1,
+          "score": 0.8019,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 235,
+          "score": 0.7915,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 557,
+          "score": 0.7854,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-06",
+      "section": "QA",
+      "topic": "Partnership - profit share",
+      "question": "How is profit shared between partners who invest different amounts for different durations?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8588977456092834,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 1/Quantitative Chapter 3 - Percentage, Profit and loss, Partnership.pdf",
+          "page_start": 6,
+          "score": 0.8589,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 284,
+          "score": 0.8455,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Arithmetic.pdf",
+          "page_start": 15,
+          "score": 0.8391,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-07",
+      "section": "QA",
+      "topic": "Ratio and Proportion",
+      "question": "What is the quickest way to divide a number in a given ratio like 2 to 3?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7722640633583069,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 241,
+          "score": 0.7723,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
+          "page_start": 112,
+          "score": 0.7586,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Basic Calculation.pdf",
+          "page_start": 32,
+          "score": 0.7583,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-08",
+      "section": "QA",
+      "topic": "Percentages - successive change",
+      "question": "If the price of an item falls by the same percentage every year, how do I find its value after n years?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.758185863494873,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/Quant 50 Imp Formulae.pdf",
+          "page_start": 2,
+          "score": 0.7582,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/SNAP PYQs/SNAP PYQs.pdf",
+          "page_start": 58,
+          "score": 0.7427,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 1/Quantitative Chapter 3 - Percentage, Profit and loss, Partnership.pdf",
+          "page_start": 2,
+          "score": 0.7382,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-09",
+      "section": "QA",
+      "topic": "Permutation and Combination",
+      "question": "In how many ways can the letters of a word be arranged if repetition is allowed?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8596820831298828,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 1039,
+          "score": 0.8597,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila PandC.pdf",
+          "page_start": 30,
+          "score": 0.8268,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-4/1 CATapult Courseware Module 4-QAA.pdf",
+          "page_start": 78,
+          "score": 0.8246,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-10",
+      "section": "QA",
+      "topic": "Counting - addition rule",
+      "question": "When do I add the number of ways instead of multiplying them in counting problems?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7852903008460999,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 1152,
+          "score": 0.7853,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2020.pdf",
+          "page_start": 114,
+          "score": 0.785,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Maths.pdf",
+          "page_start": 59,
+          "score": 0.7833,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-11",
+      "section": "QA",
+      "topic": "Compound Interest",
+      "question": "How does compound interest differ from simple interest when interest is added to the principal each period?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.9031058549880981,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Cracku Formula/Simple Interest and compound interest cat formulas pdf.pdf",
+          "page_start": 3,
+          "score": 0.9031,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/100 Shortcuts.pdf",
+          "page_start": 114,
+          "score": 0.8943,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 104,
+          "score": 0.8899,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-12",
+      "section": "QA",
+      "topic": "Alligation",
+      "question": "In what ratio should two mixtures be combined to get a mixture of a required price?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.8072658181190491,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/CAT PYQs/Past 29 yrs CAT papers (section wise).pdf",
+          "page_start": 480,
+          "score": 0.8073,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/QA-Ramandeep Singh.pdf",
+          "page_start": 344,
+          "score": 0.8066,
+          "chunk_type": "table"
+        },
+        {
+          "source_file": "Prep Club/QA/QA-Ramandeep Singh.pdf",
+          "page_start": 341,
+          "score": 0.8066,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-13",
+      "section": "QA",
+      "topic": "Time Speed Distance",
+      "question": "What concepts from time speed and distance are used for trains, boats and circular tracks?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7886962890625,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 415,
+          "score": 0.7887,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 218,
+          "score": 0.7788,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 218,
+          "score": 0.7645,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-14",
+      "section": "QA",
+      "topic": "Divisibility",
+      "question": "What are the divisibility rules I should memorise for the number system section?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8209570646286011,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Sinha Nishit K - Demystifying Number System.pdf",
+          "page_start": 241,
+          "score": 0.821,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 32,
+          "score": 0.8078,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 42,
+          "score": 0.7933,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-15",
+      "section": "QA",
+      "topic": "Progressions",
+      "question": "How do I find the sum of an arithmetic progression?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.8722867965698242,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 3/.Quantitative Chapter 4- Sequence and Series.pdf",
+          "page_start": 7,
+          "score": 0.8723,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 3/.Quantitative Chapter 4- Sequence and Series.pdf",
+          "page_start": 9,
+          "score": 0.8521,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/CAT TIME/Quant-3/Chapter-4(SequencesSeries).pdf",
+          "page_start": 10,
+          "score": 0.847,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "qa-16",
+      "section": "QA",
+      "topic": "Geometry and Mensuration",
+      "question": "What formulas do I need for surface area and volume of a cylinder and sphere?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8324211239814758,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 520,
+          "score": 0.8324,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 698,
+          "score": 0.8161,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 536,
+          "score": 0.8115,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-01",
+      "section": "DILR",
+      "topic": "Games and Tournaments",
+      "question": "How do I approach a games and tournaments problem with a points table?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.802209734916687,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 191,
+          "score": 0.8022,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 191,
+          "score": 0.7826,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
+          "page_start": 327,
+          "score": 0.7673,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-02",
+      "section": "DILR",
+      "topic": "Binary Logic",
+      "question": "How do I solve binary logic puzzles where people make true and false statements?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7839871048927307,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/EduShastra/EduShastra Official Guide DI _ LR.pdf",
+          "page_start": 235,
+          "score": 0.784,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 459,
+          "score": 0.7831,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Unacademy_/LRDI/Directions and Binary Logic.pdf",
+          "page_start": 1,
+          "score": 0.7819,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-03",
+      "section": "DILR",
+      "topic": "Seating Arrangement",
+      "question": "What is the method for solving a linear seating arrangement problem with people facing different directions?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7963149547576904,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 351,
+          "score": 0.7963,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 307,
+          "score": 0.7753,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 1 - Basic and Exercise with solution/LR chapter 1 - Linear Arrangements.pdf",
+          "page_start": 1,
+          "score": 0.7701,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-04",
+      "section": "DILR",
+      "topic": "Venn Diagrams / Set Theory",
+      "question": "How are Venn diagrams used to solve set theory questions about overlapping groups?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8659427165985107,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/EduShastra/EduShastra Official Guide Quantitative.pdf",
+          "page_start": 348,
+          "score": 0.8659,
+          "chunk_type": "table"
+        },
+        {
+          "source_file": "Prep Club/Unacademy_/LRDI/Venn Diagrams And Syllogism.pdf",
+          "page_start": 1,
+          "score": 0.8307,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/EduShastra/EduShastra Official Guide DI _ LR.pdf",
+          "page_start": 214,
+          "score": 0.8208,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-05",
+      "section": "DILR",
+      "topic": "Data Sufficiency",
+      "question": "In data sufficiency questions, when is a single statement alone enough to answer?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8838728666305542,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Unacademy_/QA/Data Sufficincy.pdf",
+          "page_start": 1,
+          "score": 0.8839,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
+          "page_start": 276,
+          "score": 0.8715,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2022.pdf",
+          "page_start": 362,
+          "score": 0.8702,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "dilr-06",
+      "section": "DILR",
+      "topic": "Number Series",
+      "question": "How do I identify the pattern in a number series based on squares and cubes?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8378990888595581,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 2  - Basic and Exercise with solution/LR book Chapter 1- Numbers and Letter series - .pdf",
+          "page_start": 2,
+          "score": 0.8379,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Maths - S K Raju.pdf",
+          "page_start": 349,
+          "score": 0.8168,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 666,
+          "score": 0.8154,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "varc-01",
+      "section": "VARC",
+      "topic": "Para Jumbles",
+      "question": "What is the strategy for solving para jumble questions and finding the opening sentence?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.8538179397583008,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 81,
+          "score": 0.8538,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 77,
+          "score": 0.8304,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 77,
+          "score": 0.8061,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "varc-02",
+      "section": "VARC",
+      "topic": "Subject-Verb Agreement",
+      "question": "What are common subject verb agreement errors to spot in grammar questions?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.8304803371429443,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/TIME Material/CAT TIME/VA/SM1001941_Part-I.pdf",
+          "page_start": 11,
+          "score": 0.8305,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2020.pdf",
+          "page_start": 489,
+          "score": 0.8156,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-3/4 Module 3 -Practice Exercise Solutions Booklet.pdf",
+          "page_start": 154,
+          "score": 0.8124,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "varc-03",
+      "section": "VARC",
+      "topic": "Critical Reasoning - assumptions",
+      "question": "How do I identify the assumption underlying an argument in critical reasoning?",
+      "content_hit": true,
+      "source_hit": false,
+      "top_score": 0.8564305305480957,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2020.pdf",
+          "page_start": 947,
+          "score": 0.8564,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2021.pdf",
+          "page_start": 902,
+          "score": 0.8564,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Reading comprehension and Critical Reasoning/Reading comprehension and Critical Reasoning.pdf",
+          "page_start": 4,
+          "score": 0.8406,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "varc-04",
+      "section": "VARC",
+      "topic": "Analogy / Word Relationships",
+      "question": "How do I solve word analogy questions by building a bridge between the word pair?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.803686261177063,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/TIME Material/CAT TIME/VA/SM1001941_Part-I.pdf",
+          "page_start": 3,
+          "score": 0.8037,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/LRDI/501 Challenging LR problems.pdf",
+          "page_start": 48,
+          "score": 0.7876,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (VARC) For the CAT.pdf",
+          "page_start": 9,
+          "score": 0.7788,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "varc-05",
+      "section": "VARC",
+      "topic": "Syllogisms",
+      "question": "What is the correct way to draw conclusions from syllogism statements?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8326714634895325,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Unacademy_/LRDI/Venn Diagrams And Syllogism.pdf",
+          "page_start": 3,
+          "score": 0.8327,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/LRDI 6th- Nishit K Sinha .pdf",
+          "page_start": 112,
+          "score": 0.8187,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/LRDI/LR -Dr. M. B. Lal_ _ Ashok Gupta.pdf",
+          "page_start": 23,
+          "score": 0.817,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "gk-01",
+      "section": "GK",
+      "topic": "Static GK",
+      "question": "Which static GK topics are important for the XAT and TISSNET general knowledge section?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7378636002540588,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Static Gk/IIFT+XAT GK Compendium 2022-23.pdf",
+          "page_start": 3,
+          "score": 0.7379,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Static Gk/IIFT XAT GK Compendium2021-22.pdf",
+          "page_start": 2,
+          "score": 0.7227,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Static Gk/IIFT+XAT GK Compendium 2022-23.pdf",
+          "page_start": 2,
+          "score": 0.7174,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "meta-01",
+      "section": "QA",
+      "topic": "Exam structure",
+      "question": "How much time is allotted to the quantitative aptitude section in CAT and what topics does it cover?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.8283003568649292,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Nishit Sinha_/QADI- Nishit Sinha (1).pdf",
+          "page_start": 1,
+          "score": 0.8283,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 11,
+          "score": 0.8258,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/QADI- Nishit Sinha (1).pdf",
+          "page_start": 1,
+          "score": 0.8158,
+          "chunk_type": "text"
+        }
+      ]
+    },
+    {
+      "id": "meta-02",
+      "section": "DILR",
+      "topic": "Exam structure",
+      "question": "What kinds of chapters appear in the data interpretation section, like pie charts and bar charts?",
+      "content_hit": true,
+      "source_hit": true,
+      "top_score": 0.7456421852111816,
+      "retrieved": [
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 109,
+          "score": 0.7456,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/LRDI 6th- Nishit K Sinha .pdf",
+          "page_start": 286,
+          "score": 0.7365,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma Data Interpretation/Arun Sharma Data Interpretation.pdf",
+          "page_start": 1,
+          "score": 0.7361,
+          "chunk_type": "text"
+        }
+      ]
+    }
+  ]
+}
