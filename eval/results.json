@@ -1,13 +1,13 @@
 {
-  "k": 3,
+  "k": 5,
   "n_questions": 30,
   "content_hit_rate": 1.0,
-  "source_hit_rate": 0.8,
+  "source_hit_rate": 1.0,
   "by_section": {
     "QA": {
       "n": 17,
       "content": 17,
-      "source": 14
+      "source": 17
     },
     "DILR": {
       "n": 7,
@@ -17,7 +17,7 @@
     "VARC": {
       "n": 5,
       "content": 5,
-      "source": 2
+      "source": 5
     },
     "GK": {
       "n": 1,
@@ -52,6 +52,18 @@
           "page_start": 14,
           "score": 0.821,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 44,
+          "score": 0.8169,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 44,
+          "score": 0.8166,
+          "chunk_type": "text"
         }
       ]
     },
@@ -80,6 +92,18 @@
           "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
           "page_start": 121,
           "score": 0.7715,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/QR.pdf",
+          "page_start": 5,
+          "score": 0.7705,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 58,
+          "score": 0.7673,
           "chunk_type": "text"
         }
       ]
@@ -110,6 +134,18 @@
           "page_start": 7,
           "score": 0.8501,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 31,
+          "score": 0.8495,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 91,
+          "score": 0.8493,
+          "chunk_type": "text"
         }
       ]
     },
@@ -138,6 +174,18 @@
           "source_file": "Prep Club/QA/TG - TSD.pdf",
           "page_start": 1,
           "score": 0.7512,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 537,
+          "score": 0.7469,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 360,
+          "score": 0.7404,
           "chunk_type": "text"
         }
       ]
@@ -168,6 +216,18 @@
           "page_start": 557,
           "score": 0.7854,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 581,
+          "score": 0.7782,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 256,
+          "score": 0.7712,
+          "chunk_type": "text"
         }
       ]
     },
@@ -196,6 +256,18 @@
           "source_file": "Prep Club/Takshzila/Arithmetic.pdf",
           "page_start": 15,
           "score": 0.8391,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 1/Quantitative Chapter 3 - Percentage, Profit and loss, Partnership.pdf",
+          "page_start": 6,
+          "score": 0.8276,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 289,
+          "score": 0.816,
           "chunk_type": "text"
         }
       ]
@@ -226,6 +298,18 @@
           "page_start": 32,
           "score": 0.7583,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 41,
+          "score": 0.7519,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 58,
+          "score": 0.7516,
+          "chunk_type": "text"
         }
       ]
     },
@@ -235,7 +319,7 @@
       "topic": "Percentages - successive change",
       "question": "If the price of an item falls by the same percentage every year, how do I find its value after n years?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.758185863494873,
       "retrieved": [
         {
@@ -254,6 +338,18 @@
           "source_file": "Prep Club/TIME Material/TIME-2021/Book on Quantitative Ability Part 1/Quantitative Chapter 3 - Percentage, Profit and loss, Partnership.pdf",
           "page_start": 2,
           "score": 0.7382,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 964,
+          "score": 0.7374,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2020.pdf",
+          "page_start": 66,
+          "score": 0.7368,
           "chunk_type": "text"
         }
       ]
@@ -284,6 +380,18 @@
           "page_start": 78,
           "score": 0.8246,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila PandC.pdf",
+          "page_start": 30,
+          "score": 0.8245,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/100 Shortcuts.pdf",
+          "page_start": 92,
+          "score": 0.8227,
+          "chunk_type": "text"
         }
       ]
     },
@@ -312,6 +420,18 @@
           "source_file": "Prep Club/QA/Maths.pdf",
           "page_start": 59,
           "score": 0.7833,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 1105,
+          "score": 0.7808,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 1153,
+          "score": 0.7806,
           "chunk_type": "text"
         }
       ]
@@ -342,6 +462,18 @@
           "page_start": 104,
           "score": 0.8899,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 104,
+          "score": 0.8874,
+          "chunk_type": "table"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 315,
+          "score": 0.8873,
+          "chunk_type": "text"
         }
       ]
     },
@@ -351,7 +483,7 @@
       "topic": "Alligation",
       "question": "In what ratio should two mixtures be combined to get a mixture of a required price?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.8072658181190491,
       "retrieved": [
         {
@@ -370,6 +502,18 @@
           "source_file": "Prep Club/QA/QA-Ramandeep Singh.pdf",
           "page_start": 341,
           "score": 0.8066,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-1_/4 CATapult Courseware Module 1-QA.pdf",
+          "page_start": 192,
+          "score": 0.8012,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 573,
+          "score": 0.7967,
           "chunk_type": "text"
         }
       ]
@@ -400,6 +544,18 @@
           "page_start": 218,
           "score": 0.7645,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 731,
+          "score": 0.7595,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma QA 8th Edition/Arun Sharma QA 8th Edition.pdf",
+          "page_start": 387,
+          "score": 0.7536,
+          "chunk_type": "text"
         }
       ]
     },
@@ -429,6 +585,18 @@
           "page_start": 42,
           "score": 0.7933,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 497,
+          "score": 0.7921,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Takshzila/Takshzila NumberSystems.pdf",
+          "page_start": 16,
+          "score": 0.7879,
+          "chunk_type": "text"
         }
       ]
     },
@@ -438,7 +606,7 @@
       "topic": "Progressions",
       "question": "How do I find the sum of an arithmetic progression?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.8722867965698242,
       "retrieved": [
         {
@@ -457,6 +625,18 @@
           "source_file": "Prep Club/TIME Material/CAT TIME/Quant-3/Chapter-4(SequencesSeries).pdf",
           "page_start": 10,
           "score": 0.847,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/QA by Trishna Knowledge.pdf",
+          "page_start": 867,
+          "score": 0.8399,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/Quantitative Aptitude - Nishit K. Sinha.pdf",
+          "page_start": 304,
+          "score": 0.8397,
           "chunk_type": "text"
         }
       ]
@@ -487,6 +667,18 @@
           "page_start": 536,
           "score": 0.8115,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2022.pdf",
+          "page_start": 87,
+          "score": 0.8109,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/QA/Quantum CAT_ Servesh Kumar Verma.pdf",
+          "page_start": 488,
+          "score": 0.7969,
+          "chunk_type": "text"
         }
       ]
     },
@@ -515,6 +707,18 @@
           "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
           "page_start": 327,
           "score": 0.7673,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2019.pdf",
+          "page_start": 279,
+          "score": 0.7558,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/GMAT/GMAT Official Guide 2022.pdf",
+          "page_start": 406,
+          "score": 0.7547,
           "chunk_type": "text"
         }
       ]
@@ -545,6 +749,18 @@
           "page_start": 1,
           "score": 0.7819,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Unacademy_/LRDI/Directions and Binary Logic.pdf",
+          "page_start": 1,
+          "score": 0.7671,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 378,
+          "score": 0.7488,
+          "chunk_type": "text"
         }
       ]
     },
@@ -573,6 +789,18 @@
           "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 1 - Basic and Exercise with solution/LR chapter 1 - Linear Arrangements.pdf",
           "page_start": 1,
           "score": 0.7701,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 2  - Basic and Exercise with solution/LR chapter 7 - Analytical Puzzles .pdf",
+          "page_start": 1,
+          "score": 0.7698,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 341,
+          "score": 0.7641,
           "chunk_type": "text"
         }
       ]
@@ -603,6 +831,18 @@
           "page_start": 214,
           "score": 0.8208,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OSWAL CAT BOOK.pdf",
+          "page_start": 736,
+          "score": 0.8146,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Trishna Knowledge System/Trishna Knowledge Systems - (DILR) For CAT.pdf",
+          "page_start": 534,
+          "score": 0.8069,
+          "chunk_type": "text"
         }
       ]
     },
@@ -631,6 +871,18 @@
           "source_file": "Prep Club/GMAT/GMAT Official Guide 2022.pdf",
           "page_start": 362,
           "score": 0.8702,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/LRDI/DI - Haripal Rawat.pdf",
+          "page_start": 86,
+          "score": 0.8321,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/MAH-CET (Past Papers)/Actual-MH-CET-2014.pdf",
+          "page_start": 37,
+          "score": 0.831,
           "chunk_type": "text"
         }
       ]
@@ -661,6 +913,18 @@
           "page_start": 666,
           "score": 0.8154,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2020.pdf",
+          "page_start": 1080,
+          "score": 0.8112,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/NMAT_/NMAT Official Guide 2021.pdf",
+          "page_start": 1019,
+          "score": 0.8112,
+          "chunk_type": "text"
         }
       ]
     },
@@ -670,7 +934,7 @@
       "topic": "Para Jumbles",
       "question": "What is the strategy for solving para jumble questions and finding the opening sentence?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.8538179397583008,
       "retrieved": [
         {
@@ -690,6 +954,18 @@
           "page_start": 77,
           "score": 0.8061,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/VARC for CAT by Nishit Sinha.pdf",
+          "page_start": 128,
+          "score": 0.7963,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Unacademy_/VARC/Para Jumbles.pdf",
+          "page_start": 9,
+          "score": 0.7778,
+          "chunk_type": "text"
         }
       ]
     },
@@ -699,7 +975,7 @@
       "topic": "Subject-Verb Agreement",
       "question": "What are common subject verb agreement errors to spot in grammar questions?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.8304803371429443,
       "retrieved": [
         {
@@ -719,6 +995,18 @@
           "page_start": 154,
           "score": 0.8124,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-3/3 CATapult Courseware Module 3-VA.pdf",
+          "page_start": 3,
+          "score": 0.8021,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Grammar/GMAT Grammar Prep Book.pdf",
+          "page_start": 197,
+          "score": 0.7916,
+          "chunk_type": "text"
         }
       ]
     },
@@ -728,7 +1016,7 @@
       "topic": "Critical Reasoning - assumptions",
       "question": "How do I identify the assumption underlying an argument in critical reasoning?",
       "content_hit": true,
-      "source_hit": false,
+      "source_hit": true,
       "top_score": 0.8564305305480957,
       "retrieved": [
         {
@@ -744,9 +1032,21 @@
           "chunk_type": "text"
         },
         {
+          "source_file": "Prep Club/TIME Material/CAT TIME/VA/RC/SM1001902.pdf",
+          "page_start": 39,
+          "score": 0.8406,
+          "chunk_type": "text"
+        },
+        {
           "source_file": "Prep Club/TIME Material/TIME-2021/Reading comprehension and Critical Reasoning/Reading comprehension and Critical Reasoning.pdf",
           "page_start": 4,
           "score": 0.8406,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Arun Sharma/Arun Sharma Logical Reasoning/Arun Sharma Logical Reasoning.pdf",
+          "page_start": 245,
+          "score": 0.8276,
           "chunk_type": "text"
         }
       ]
@@ -777,6 +1077,18 @@
           "page_start": 9,
           "score": 0.7788,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/LRDI/501 Challenging LR problems.pdf",
+          "page_start": 50,
+          "score": 0.7715,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 2  - Basic and Exercise with solution/LR chapter 8- Number and Letter Analogies.pdf",
+          "page_start": 1,
+          "score": 0.7597,
+          "chunk_type": "text"
         }
       ]
     },
@@ -805,6 +1117,18 @@
           "source_file": "Prep Club/LRDI/LR -Dr. M. B. Lal_ _ Ashok Gupta.pdf",
           "page_start": 23,
           "score": 0.817,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/EduShastra/EduShastra Official Guide DI _ LR.pdf",
+          "page_start": 170,
+          "score": 0.8135,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/TIME Material/TIME-2021/Logical Reasoning Book 1 - Basic and Exercise with solution/LR chapter 9 - Logical Deduction.pdf",
+          "page_start": 1,
+          "score": 0.8109,
           "chunk_type": "text"
         }
       ]
@@ -835,6 +1159,18 @@
           "page_start": 2,
           "score": 0.7174,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Static Gk/TISSNET GK Compendium2021-22.pdf",
+          "page_start": 2,
+          "score": 0.7139,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Static Gk/IIFT XAT GK Compendium2021-22.pdf",
+          "page_start": 3,
+          "score": 0.6741,
+          "chunk_type": "text"
         }
       ]
     },
@@ -864,6 +1200,18 @@
           "page_start": 1,
           "score": 0.8158,
           "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/VARC for CAT by Nishit Sinha.pdf",
+          "page_start": 14,
+          "score": 0.811,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/Nishit Sinha_/LRDI 6th- Nishit K Sinha .pdf",
+          "page_start": 17,
+          "score": 0.8093,
+          "chunk_type": "text"
         }
       ]
     },
@@ -892,6 +1240,18 @@
           "source_file": "Prep Club/Arun Sharma/Arun Sharma Data Interpretation/Arun Sharma Data Interpretation.pdf",
           "page_start": 1,
           "score": 0.7361,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/OMETs _ Banking Level Practice Material_/10.Caselets-DI-Pdf-By-Governmentadda.com_.pdf",
+          "page_start": 3,
+          "score": 0.7322,
+          "chunk_type": "text"
+        },
+        {
+          "source_file": "Prep Club/IMS Materials/CATapult Courseware_/Module-1_/5 CATapult Courseware Module 1-DI-LR.pdf",
+          "page_start": 7,
+          "score": 0.7312,
           "chunk_type": "text"
         }
       ]

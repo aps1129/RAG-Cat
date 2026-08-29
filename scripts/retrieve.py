@@ -61,10 +61,11 @@ class Retriever:
         )
 
         hits = []
-        for doc, meta, dist in zip(res["documents"][0], res["metadatas"][0], res["distances"][0]):
+        for cid, doc, meta, dist in zip(res["ids"][0], res["documents"][0], res["metadatas"][0], res["distances"][0]):
             if source_contains and source_contains.lower() not in meta["source_file"].lower():
                 continue
             hits.append({
+                "chunk_id": cid,
                 "text": doc,
                 "source_file": meta["source_file"],
                 "heading": meta.get("heading") or None,

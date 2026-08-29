@@ -18,14 +18,20 @@ source corpus (1,266 files, 1.8 GB)
         ├─ stage1_extract.py ──► output/extracted/*.json     (slow: PDF parse + OCR)
         │      PyMuPDF text · pytesseract OCR fallback · table detection
         │
+        ├─ link_qa.py ─────────► output/qa_links.json        (fast: pure logic)
+        │      pairs question files/folders with their solution counterpart
+        │
         ├─ stage2_chunk.py ────► output/chunks.jsonl         (fast: pure logic)
-        │      heading-aware section chunking · dedupe · 1600-char hard cap
+        │      heading-aware section chunking · dedupe · qa_links applied · 1600-char cap
         │
         ├─ stage3_embed.py ────► output/chroma_db/           (bge-small-en-v1.5)
         │
         ├─ retrieve.py ────────► top-k semantic search
         │
-        └─ generate.py ────────► validated quiz JSON  (Groq Llama 3.3 / Gemini)
+        └─ generate.py ────────► validated quiz JSON  (Groq / Gemini)
+               │
+               └─ expands each retrieved question chunk with its linked
+                  solution chunk (or vice versa) before prompting the LLM
 ```
 
 Extraction and chunking are **deliberately separate stages**. Extraction is the
@@ -77,6 +83,40 @@ structure of justified prose as a table, emitting a single-cell "table" holding 
 entire reading-comprehension passage. Tables are accepted only if they have ≥2 columns,
 ≥2 rows, and no cell longer than 400 characters.
 
+**Question/solution linkage.** A large fraction of the corpus stores a question
+paper and its worked solutions as separate files or folders --
+`Question/07.pdf` next to `Answer_/07.pdf`, or `IIFT 2020.pdf` next to
+`IIFT 2020 Soln.pdf` -- so a question chunk and the shortcut that solves it can
+end up in entirely different documents. Since the whole point of this project
+is retrieving a shortcut *alongside* the question it explains, that split
+mattered enough to build `link_qa.py`: it pairs files by stripping known
+question/answer vocabulary from folder and file names and matching what's
+left, using three passes (exact-filename sibling folders, fuzzy-filename
+sibling folders, sibling files in the same folder). It links **496 files into
+248 pairs (39% of the corpus)**, verified by hand-sampling matches across all
+three passes plus every low-confidence fuzzy match -- no false positives found.
+`generate.py` uses the map at retrieval time: any retrieved chunk that has a
+linked counterpart pulls in that file's nearest-page chunk as extra context,
+labeled `[Linked SOLUTION for Excerpt N]` / `[Linked QUESTION for Excerpt N]`
+so the model knows which is which.
+
+Two bugs surfaced building this, both instructive:
+- **Role came from the wrong level.** A bare `01.pdf` carries no
+  question/answer vocabulary of its own -- only its *parent folder*
+  (`Question/` vs `Answer_/`) does. The first version re-derived role from the
+  filename for every match, which silently discarded 160 of 172 folder-based
+  matches (they'd tie as "unmarked" vs "unmarked"). Fixed by threading the
+  folder-level role down into the file-matching pass instead of re-guessing it.
+  Caught by a self-consistency assertion (match-event count must equal
+  linked-file count / 2), not by eyeballing output.
+- **Dedup silently breaks file-path-keyed links.** `qa_links.json` is built
+  against the pre-dedup file tree, but dedup drops an entire duplicate file's
+  chunks in favor of an identical copy elsewhere -- so a link pointing at the
+  now-dropped path pointed at nothing. Fixed by voting: for each original
+  file, find which surviving file most of its chunks now belong to, and remap
+  both sides of every link through that alias before annotating. 221 of 496
+  linked files needed remapping -- this wasn't a rare edge case.
+
 **Deduplication.** The corpus ships the same books at multiple paths (archive
 re-extractions, PYQ folders mirroring subject folders). 24,310 byte-identical chunks
 were dropped — 17% of the raw total — because duplicate passages otherwise consume
@@ -127,19 +167,22 @@ python scripts/step1_survey.py --sample-size 50
 # 2. extract (slow, resumable, crash-resilient — safe to re-run)
 python scripts/stage1_extract.py --workers 4
 
-# 3. chunk (fast, rebuilds from cache every run)
+# 3. link question files to their solution counterparts (fast, pure logic)
+python scripts/link_qa.py
+
+# 4. chunk (fast, rebuilds from cache every run; applies qa_links.json)
 python scripts/stage2_chunk.py
 
-# 4. embed into ChromaDB (--resume to continue an interrupted run)
+# 5. embed into ChromaDB (--resume to continue an interrupted run)
 python scripts/stage3_embed.py
 
-# 5. query
+# 6. query
 python scripts/retrieve.py "how do I count trailing zeros in a factorial"
 
-# 6. evaluate retrieval
+# 7. evaluate retrieval
 python scripts/eval_retrieval.py --k 5
 
-# 7. generate a quiz  (set GROQ_API_KEY or GEMINI_API_KEY first)
+# 8. generate a quiz  (set GROQ_API_KEY or GEMINI_API_KEY first)
 python scripts/generate.py "time speed distance shortcuts" --n 5
 ```
 
@@ -216,17 +259,42 @@ scripts/
   peek_archives.py     inspect zip/rar contents without extracting
   extract.py           per-document extraction (PDF/HTML/docx) + OCR fallback
   chunk.py             heading detection, section chunking, table rendering
+  link_qa.py           pairs question files/folders with their solution counterpart
   stage1_extract.py    parallel extraction driver, resumable
-  stage2_chunk.py      chunking driver + deduplication
+  stage2_chunk.py      chunking driver + deduplication + qa_links application
   stage3_embed.py      embedding + ChromaDB load, resumable
   retrieve.py          Retriever class + query CLI
   eval_retrieval.py    hit@k against the eval set
-  generate.py          retrieval-grounded quiz generation, schema-validated
+  generate.py          retrieval-grounded quiz generation, schema-validated,
+                       expands context across linked question/solution files
 eval/
   eval_set.json        30 hand-built Q/A pairs
   results.json         latest eval run
 output/
   extracted/           cached per-document extraction (gitignored)
+  qa_links.json        question <-> solution file map (248 pairs)
   chunks.jsonl         final chunk store
   chroma_db/           persistent vector store (gitignored)
 ```
+
+## Known limitations
+
+- **A minority of "solution" files have no real solution text.** Some mock
+  tests in the corpus were exported as printed webpages with the solution
+  panel still collapsed behind JavaScript, so the PDF's text layer only has
+  the restated question and UI labels ("Answer key/Solution", "Bookmark") --
+  no amount of better chunking recovers text that was never rendered. This
+  surfaced during testing on one CL mock-review export; most linked answer
+  files (Arun Sharma, NMAT, IIFT, XAT, TIME) do contain genuine worked
+  explanations.
+- **VARC has few *named* shortcuts to retrieve.** Unlike QA ("skipping zero
+  concept", "alligation"), reading comprehension and verbal material rarely
+  names a reusable technique -- `shortcut_used` for VARC questions tends to
+  come out generic ("process of elimination") rather than citing something
+  specific from the source, simply because the source itself is more
+  explanatory than technique-based for this section.
+- **Generation quality is spot-checked, not systematically evaluated.** The
+  30-question eval set in `eval/` measures retrieval (does the right context
+  come back), not generation (is the LLM's math correct, does `shortcut_used`
+  actually match the source rather than paraphrase it generically). Treat
+  generated quizzes as a draft to review, not a graded answer key.

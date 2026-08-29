@@ -22,6 +22,7 @@ import json
 import os
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import List, Literal
 
@@ -32,11 +33,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from retrieve import Retriever
+from link_qa import load_links as load_qa_links
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_DEFAULT_MODEL = "openai/gpt-oss-120b"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 GEMINI_DEFAULT_MODEL = "gemini-2.0-flash"
+
+CHUNKS_PATH = Path(__file__).resolve().parent.parent / "output" / "chunks.jsonl"
 
 
 # ----------------------------- schema -----------------------------
@@ -65,6 +69,12 @@ SYSTEM_PROMPT = """You are a CAT (Common Admission Test) exam question writer.
 You will be given EXCERPTS from real CAT preparation material. Write quiz \
 questions grounded ONLY in those excerpts.
 
+Some excerpts are paired: a "[Linked SOLUTION for Excerpt N]" block gives the \
+worked solution to the question in Excerpt N (the reverse, "[Linked QUESTION \
+for Excerpt N]", also occurs). When you see a linked pair, prefer it -- the \
+solution excerpt is usually where the actual named shortcut lives, not the bare \
+question text.
+
 Hard rules:
 - Use only shortcuts, formulas and methods that actually appear in the excerpts. \
 Never invent a shortcut.
@@ -81,17 +91,88 @@ Return ONLY a JSON object of this exact shape, with no prose or markdown:
 "correct_answer": "...", "shortcut_used": "..."}]}"""
 
 
-def build_context(hits: list, max_chars: int = 9000) -> str:
+def load_linked_chunk_index(qa_links: dict) -> dict:
+    """Stream chunks.jsonl once, keeping only chunks that belong to a file
+    which is the LINKED counterpart of something else (~7% of the corpus --
+    see link_qa.py). This is what lets a retrieved question chunk pull in
+    its worked-solution chunk even though semantic search alone wouldn't
+    rank a mostly-numeric answer page highly for a text query."""
+    wanted = {v["linked_to"] for v in qa_links.values()}
+    if not wanted:
+        return {}
+    index = defaultdict(list)
+    with open(CHUNKS_PATH, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            c = json.loads(line)
+            if c["source_file"] in wanted:
+                index[c["source_file"]].append(c)
+    for chunks in index.values():
+        chunks.sort(key=lambda c: (c["page_start"] or 0, c["chunk_id"]))
+    return index
+
+
+def find_linked_chunks(hit: dict, qa_links: dict, index: dict, max_per_hit: int = 2) -> list:
+    """For a retrieved hit whose source file has a known counterpart, return
+    the counterpart's chunks with the closest page number -- e.g. a question
+    on page 3 of Question/07.pdf should pull the explanation for page 3 of
+    Answer_/07.pdf, not page 1."""
+    link = qa_links.get(hit["source_file"])
+    if not link:
+        return []
+    candidates = index.get(link["linked_to"], [])
+    if not candidates:
+        return []
+    # link["role"] is the HIT's own role; the counterpart is the opposite side.
+    counterpart_role = "answer" if link["role"] == "question" else "question"
+    target_page = hit["page_start"] or 0
+    candidates = sorted(candidates, key=lambda c: abs((c["page_start"] or 0) - target_page))
+    return [{**c, "_linked_role": counterpart_role} for c in candidates[:max_per_hit]]
+
+
+def build_context(hits: list, qa_links: dict = None, linked_index: dict = None,
+                  max_chars: int = 9000) -> tuple:
+    """Returns (context_text, provenance_list). Each primary hit is followed
+    immediately by its linked question/solution excerpt (if any) so the two
+    stay visually paired for the model, rather than the linked material
+    showing up in an unrelated position later in the prompt."""
+    qa_links = qa_links or {}
+    linked_index = linked_index or {}
     parts = []
+    provenance = []
     used = 0
+    seen_chunk_ids = {h["chunk_id"] for h in hits if "chunk_id" in h}
+
+    def add_block(text: str) -> bool:
+        nonlocal used
+        if used + len(text) > max_chars:
+            return False
+        parts.append(text)
+        used += len(text)
+        return True
+
     for i, h in enumerate(hits, 1):
         loc = h["source_file"].split("/")[-1]
-        block = f"[Excerpt {i} | {loc} | p{h['page_start']}]\n{h['text']}\n"
-        if used + len(block) > max_chars:
+        if not add_block(f"[Excerpt {i} | {loc} | p{h['page_start']}]\n{h['text']}\n"):
             break
-        parts.append(block)
-        used += len(block)
-    return "\n".join(parts)
+        provenance.append({"source_file": h["source_file"], "page_start": h["page_start"],
+                           "score": round(h["score"], 4), "role": "retrieved"})
+
+        for linked in find_linked_chunks(h, qa_links, linked_index):
+            if linked.get("chunk_id") in seen_chunk_ids:
+                continue  # already independently retrieved -- don't duplicate
+            seen_chunk_ids.add(linked.get("chunk_id"))
+            loc2 = linked["source_file"].split("/")[-1]
+            label = "SOLUTION" if linked["_linked_role"] == "answer" else "QUESTION"
+            block = f"[Linked {label} for Excerpt {i} | {loc2} | p{linked['page_start']}]\n{linked['text']}\n"
+            if not add_block(block):
+                continue
+            provenance.append({"source_file": linked["source_file"], "page_start": linked["page_start"],
+                               "score": None, "role": f"linked_{linked['_linked_role']}"})
+
+    return "\n".join(parts), provenance
 
 
 # ----------------------------- providers -----------------------------
@@ -159,12 +240,13 @@ def extract_json(raw: str) -> dict:
 
 
 def generate_quiz(topic: str, n: int, provider: str, model: str, k: int,
-                  temperature: float, retriever: Retriever) -> dict:
+                  temperature: float, retriever: Retriever,
+                  qa_links: dict = None, linked_index: dict = None) -> dict:
     hits = retriever.search(topic, k=k)
     if not hits:
         raise RuntimeError(f"No chunks retrieved for topic: {topic!r}")
 
-    context = build_context(hits)
+    context, provenance = build_context(hits, qa_links, linked_index)
     user = (f"Topic: {topic}\n\nWrite exactly {n} CAT quiz question(s) grounded in "
             f"these excerpts.\n\n{context}")
 
@@ -178,10 +260,7 @@ def generate_quiz(topic: str, n: int, provider: str, model: str, k: int,
         "topic": topic,
         "provider": provider,
         "model": model,
-        "retrieved_context": [
-            {"source_file": h["source_file"], "page_start": h["page_start"],
-             "score": round(h["score"], 4)} for h in hits
-        ],
+        "retrieved_context": provenance,
         "questions": [q.model_dump() for q in quiz.questions],
     }
 
@@ -202,10 +281,15 @@ def main():
 
     print(f"Loading retriever ...")
     retriever = Retriever()
+    qa_links = load_qa_links()
+    linked_index = load_linked_chunk_index(qa_links)
+    if qa_links:
+        print(f"Q/A linkage: {len(qa_links) // 2} pairs available "
+              f"({len(linked_index)} distinct linked files indexed)")
 
     try:
-        result = generate_quiz(args.topic, args.n, args.provider, model,
-                               args.k, args.temperature, retriever)
+        result = generate_quiz(args.topic, args.n, args.provider, model, args.k,
+                               args.temperature, retriever, qa_links, linked_index)
     except ValidationError as e:
         print(f"\nModel returned JSON that failed schema validation:\n{e}", file=sys.stderr)
         sys.exit(2)
@@ -216,7 +300,8 @@ def main():
     print(f"\nTopic: {result['topic']}   ({result['provider']}/{result['model']})")
     print("Context retrieved from:")
     for c in result["retrieved_context"]:
-        print(f"   {c['score']:.3f}  {c['source_file']} p{c['page_start']}")
+        score = f"{c['score']:.3f}" if c["score"] is not None else f"({c['role']})"
+        print(f"   {score:<10} {c['source_file']} p{c['page_start']}")
 
     for i, q in enumerate(result["questions"], 1):
         print(f"\n{'-' * 66}\nQ{i}. {q['question']}")
