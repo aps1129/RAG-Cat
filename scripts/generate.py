@@ -22,6 +22,7 @@ import json
 import os
 import re
 import sys
+import time
 from collections import defaultdict
 from pathlib import Path
 from typing import List, Literal
@@ -177,22 +178,55 @@ def build_context(hits: list, qa_links: dict = None, linked_index: dict = None,
 
 # ----------------------------- providers -----------------------------
 
+RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+MAX_RETRIES = 4
+
+_RETRY_AFTER_RE = re.compile(r"try again in ([\d.]+)s", re.I)
+
+
+def _request_with_retry(post_fn, max_retries: int = MAX_RETRIES):
+    """Retry on rate limits (429) and transient server errors, honoring the
+    provider's own suggested wait time when it gives one (Groq's free tier
+    reports this and it's usually just a few seconds -- far better than a
+    fixed guess). Exponential backoff otherwise."""
+    last_err = None
+    for attempt in range(max_retries + 1):
+        resp = post_fn()
+        if resp.status_code == 200:
+            return resp
+        last_err = resp
+        if resp.status_code not in RETRYABLE_STATUS or attempt == max_retries:
+            break
+        wait = 2 ** attempt
+        match = _RETRY_AFTER_RE.search(resp.text)
+        if match:
+            wait = float(match.group(1)) + 0.5
+        print(f"  [retry {attempt + 1}/{max_retries}] {resp.status_code}, waiting {wait:.1f}s ...",
+              file=sys.stderr)
+        time.sleep(wait)
+    return last_err
+
+
 def call_groq(system: str, user: str, model: str, temperature: float) -> str:
     key = os.environ.get("GROQ_API_KEY")
     if not key:
         raise RuntimeError("GROQ_API_KEY is not set in the environment.")
-    resp = requests.post(
-        GROQ_URL,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        json={
-            "model": model,
-            "messages": [{"role": "system", "content": system},
-                         {"role": "user", "content": user}],
-            "temperature": temperature,
-            "response_format": {"type": "json_object"},
-        },
-        timeout=120,
-    )
+
+    def do_post():
+        return requests.post(
+            GROQ_URL,
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={
+                "model": model,
+                "messages": [{"role": "system", "content": system},
+                             {"role": "user", "content": user}],
+                "temperature": temperature,
+                "response_format": {"type": "json_object"},
+            },
+            timeout=120,
+        )
+
+    resp = _request_with_retry(do_post)
     if resp.status_code != 200:
         raise RuntimeError(f"Groq API {resp.status_code}: {resp.text[:400]}")
     return resp.json()["choices"][0]["message"]["content"]
@@ -202,19 +236,23 @@ def call_gemini(system: str, user: str, model: str, temperature: float) -> str:
     key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY is not set in the environment.")
-    resp = requests.post(
-        GEMINI_URL.format(model=model),
-        headers={"Content-Type": "application/json", "x-goog-api-key": key},
-        json={
-            "systemInstruction": {"parts": [{"text": system}]},
-            "contents": [{"role": "user", "parts": [{"text": user}]}],
-            "generationConfig": {
-                "temperature": temperature,
-                "responseMimeType": "application/json",
+
+    def do_post():
+        return requests.post(
+            GEMINI_URL.format(model=model),
+            headers={"Content-Type": "application/json", "x-goog-api-key": key},
+            json={
+                "systemInstruction": {"parts": [{"text": system}]},
+                "contents": [{"role": "user", "parts": [{"text": user}]}],
+                "generationConfig": {
+                    "temperature": temperature,
+                    "responseMimeType": "application/json",
+                },
             },
-        },
-        timeout=120,
-    )
+            timeout=120,
+        )
+
+    resp = _request_with_retry(do_post)
     if resp.status_code != 200:
         raise RuntimeError(f"Gemini API {resp.status_code}: {resp.text[:400]}")
     return resp.json()["candidates"][0]["content"]["parts"][0]["text"]
