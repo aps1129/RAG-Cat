@@ -9,4 +9,6 @@ output/chroma_db/
 output/chunks.jsonl
 output/*.log
 output/*.err
+output/extract_log.jsonl
+output/manifest.jsonl
 reports/*.json
