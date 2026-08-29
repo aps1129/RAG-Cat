@@ -1,0 +1,205 @@
+{
+  "n_generation_attempts": 12,
+  "n_generation_failures": 0,
+  "n_questions_generated": 12,
+  "judge_answer_correct_rate": 0.833,
+  "judge_shortcut_grounded_rate": 0.917,
+  "distinct_options_rate": 1.0,
+  "avg_lexical_grounding_score": 0.777,
+  "model": "openai/gpt-oss-120b",
+  "judge_model": "openai/gpt-oss-120b",
+  "records": [
+    {
+      "section": "QA",
+      "topic": "trailing zeros in factorial shortcut",
+      "status": "ok",
+      "question": "Which of the following numbers cannot be the exact number of trailing zeros in n! for any positive integer n?",
+      "correct_answer": "23",
+      "shortcut_used": "Skipping zero concept – at multiples of 25 the count of trailing zeros jumps by 2, so numbers like 5,11,17,23,… are impossible",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.73,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The answer 23 is indeed impossible, and the source discusses the skipping‑zero effect at multiples of 25 causing such gaps."
+      }
+    },
+    {
+      "section": "QA",
+      "topic": "successive percentage change shortcut",
+      "status": "ok",
+      "question": "A product’s price is first increased by 15% and then decreased by 12%. What is the single percentage change equivalent to these two successive changes?",
+      "correct_answer": "1.2% increase",
+      "shortcut_used": "Successive percentage change formula (a% + b% + (a×b)/100%)",
+      "distinct_options": true,
+      "lexical_grounding_score": 1.0,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The net factor 1.15*0.88=1.012 gives a 1.2% increase, matching the claimed answer; the source explicitly provides the successive percentage change formula a%+b%+(a×b)/100%."
+      }
+    },
+    {
+      "section": "QA",
+      "topic": "alligation and mixtures shortcut",
+      "status": "ok",
+      "question": "Two varieties of coffee cost Rs 130 per kg (cheaper) and Rs 190 per kg (costlier). They are mixed to obtain a blend costing Rs 150 per kg. In what ratio (by weight) should the cheaper variety be mixed with the costlier variety?",
+      "correct_answer": "2 : 1",
+      "shortcut_used": "Alligation Rule – Cheaper:Costlier = (D – M) : (M – C)",
+      "distinct_options": true,
+      "lexical_grounding_score": 1.0,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "Answer 2:1 follows directly from the Alligation Rule formula given in the source, and the shortcut phrase matches the source text."
+      }
+    },
+    {
+      "section": "QA",
+      "topic": "time and work negative work concept",
+      "status": "ok",
+      "question": "A monkey climbs a 57 m tall tree. In the first minute it climbs 6 m. In each subsequent minute it climbs 6 m and then slips down 4 m. Assuming the slip occurs after the climb, in how many minutes will the monkey reach the top?",
+      "correct_answer": "27 minutes",
+      "shortcut_used": "Negative work concept – subtract first minute work, then use net gain per minute",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.86,
+      "judge": {
+        "answer_correct": false,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The correct calculation gives 25 minutes, not 27; the described shortcut is indeed mentioned in the source excerpt."
+      }
+    },
+    {
+      "section": "DILR",
+      "topic": "games and tournaments points table approach",
+      "status": "ok",
+      "question": "In a round‑robin tournament with six teams, each match awards 2 points to the winner, 1 point each for a draw, and 0 to the loser. Exactly two matches end in draws. The final points of five teams are 9, 8, 7, 3 and 2. What is the point total of the sixth team?",
+      "correct_answer": "1",
+      "shortcut_used": "Round robin points calculation (total points = total games × 2, with win=2, draw=1, loss=0)",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.88,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The sixth team must have 1 point to reach total 30 points; the scoring rule in the excerpt supports the total‑points calculation used as shortcut."
+      }
+    },
+    {
+      "section": "DILR",
+      "topic": "binary logic true false statements",
+      "status": "ok",
+      "question": "Among three persons A, B and C, exactly one is a truth‑teller, one is a liar and one is an alternator. Each person makes two statements: \nA: “I am not the liar.”  “B is the alternator.”\nB: “I am the truth‑teller.”  “C is the liar.”\nC: “I am the alternator.”  “A is the truth‑teller.”\nWho is the truth‑teller?",
+      "correct_answer": "B",
+      "shortcut_used": "Basic Condition Logic (BCL) and Logic of the Statements (LoS)",
+      "distinct_options": true,
+      "lexical_grounding_score": 1.0,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "Answer B is logically consistent; the shortcut terms are explicitly mentioned in the source."
+      }
+    },
+    {
+      "section": "DILR",
+      "topic": "venn diagram set theory shortcut",
+      "status": "ok",
+      "question": "In a college, 150 students passed Physics, 90 students passed Chemistry, and 45 students passed both Physics and Chemistry. Using the Venn diagram shortcut, how many students passed at least one of the two subjects?",
+      "correct_answer": "195",
+      "shortcut_used": "Inclusion-Exclusion for two sets: total = A + B – A∩B",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.5,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The inclusion-exclusion formula is explicitly given in the source, and applying it yields 195."
+      }
+    },
+    {
+      "section": "DILR",
+      "topic": "data sufficiency approach",
+      "status": "ok",
+      "question": "According to the excerpts, data‑sufficiency questions primarily require the test‑taker to:",
+      "correct_answer": "Determine whether the provided statements contain enough information to answer the question.",
+      "shortcut_used": "Judge sufficiency of statements (as defined in the excerpt)",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.6,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The excerpt explicitly states that data‑sufficiency questions require judging if statements provide enough information, matching the chosen answer and shortcut."
+      }
+    },
+    {
+      "section": "VARC",
+      "topic": "para jumble opening sentence strategy",
+      "status": "ok",
+      "question": "Which of the following sentences is most likely to be the opening sentence of the paragraph?",
+      "correct_answer": "Dr. Maya Rao, a pioneer in renewable energy research, has transformed the field with her innovative solar panels.",
+      "shortcut_used": "General to specific (identifying opening sentence)",
+      "distinct_options": true,
+      "lexical_grounding_score": 1.0,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "The first option introduces the topic, matching the 'General to specific' step described in the source."
+      }
+    },
+    {
+      "section": "VARC",
+      "topic": "critical reasoning assumption identification",
+      "status": "ok",
+      "question": "Passage: \"All managers who attend the weekly leadership workshop report higher team satisfaction scores. Company Y has sent all its managers to the workshop, therefore team satisfaction across the company will improve.\" Which of the following is the most essential assumption for the conclusion?",
+      "correct_answer": "The workshop improves managers' leadership skills.",
+      "shortcut_used": "Assumption Identification (identifying the underlying assumption that links the premise to the conclusion)",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.43,
+      "judge": {
+        "answer_correct": false,
+        "shortcut_grounded": false,
+        "confidence": "high",
+        "notes": "The essential assumption is that all managers actually attended the workshop, not that the workshop improves skills; the phrase 'Assumption Identification' does not appear verbatim in the source."
+      }
+    },
+    {
+      "section": "VARC",
+      "topic": "grammar subject verb agreement rule",
+      "status": "ok",
+      "question": "Select the sentence that correctly follows the subject‑verb agreement rule:",
+      "correct_answer": "The group of students presents their project tomorrow.",
+      "shortcut_used": "Subject-Verb Agreement Rule – a singular subject takes a singular verb",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.83,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "Option 1 correctly matches singular subject 'group' with singular verb 'presents'; the rule cited is present in the excerpt."
+      }
+    },
+    {
+      "section": "VARC",
+      "topic": "word analogy bridge method",
+      "status": "ok",
+      "question": "SCULPTOR : STATUE :: which of the following pairs shows a relationship most similar to the one expressed by the capitalized pair?",
+      "correct_answer": "author : novel",
+      "shortcut_used": "Sentence formulation – identify the creator‑creation relationship as described in the analogy",
+      "distinct_options": true,
+      "lexical_grounding_score": 0.5,
+      "judge": {
+        "answer_correct": true,
+        "shortcut_grounded": true,
+        "confidence": "high",
+        "notes": "author:novel correctly matches creator‑creation; the source explicitly advises forming a sentence to capture the relationship, grounding the shortcut"
+      }
+    }
+  ]
+}

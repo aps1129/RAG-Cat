@@ -249,6 +249,38 @@ Read these honestly:
 
 Typical top-1 cosine similarity sits around 0.75–0.90.
 
+### Generation eval (12 topics across QA/DILR/VARC, `eval_generation.py`)
+
+Retrieval quality doesn't guarantee generation quality -- the LLM still has to reason
+correctly from the context it's handed. This runs `generate.py` end-to-end on topics
+distinct from the retrieval eval set, then has a *second*, independent LLM call
+re-derive the answer from the same source excerpt from scratch and judge whether
+`correct_answer` actually holds up and whether `shortcut_used` names something that
+genuinely appears in the source rather than a plausible-sounding invention.
+
+| Metric | Result |
+|---|---:|
+| Generation attempts (schema-valid JSON) | 12/12 (100%) |
+| Judge: answer actually correct | 10/12 (83%) |
+| Judge: shortcut genuinely grounded in source | 11/12 (92%) |
+| Options structurally distinct | 12/12 (100%) |
+
+This is a judge model checking another model's output, not ground truth -- but it
+found two real problems, which is the point of running it:
+
+- A **Time & Work question got the arithmetic wrong** (claimed 27 minutes; the judge's
+  independent derivation and re-check gives 25). The retrieved shortcut itself was
+  correctly cited; the model's own arithmetic on top of it was not.
+- A **Critical Reasoning question misidentified the assumption**, and separately used
+  "Assumption Identification" as `shortcut_used` -- a category label, not a technique
+  that appears in the source. This is the VARC generic-shortcut limitation below,
+  caught empirically rather than just predicted.
+
+Practical takeaway: **treat generated QA/DILR questions as generally reliable and
+generated VARC questions as needing a read-through** -- consistent with VARC material
+being more explanatory than technique-based to begin with. Full per-question judge
+output (including the two flagged records) is in `eval/generation_results.json`.
+
 ---
 
 ## Repository layout
@@ -293,8 +325,9 @@ output/
   come out generic ("process of elimination") rather than citing something
   specific from the source, simply because the source itself is more
   explanatory than technique-based for this section.
-- **Generation quality is spot-checked, not systematically evaluated.** The
-  30-question eval set in `eval/` measures retrieval (does the right context
-  come back), not generation (is the LLM's math correct, does `shortcut_used`
-  actually match the source rather than paraphrase it generically). Treat
-  generated quizzes as a draft to review, not a graded answer key.
+- **Generation has a real, measured error rate: ~1 in 6.** `eval_generation.py`
+  (see Generation eval above) found the model gets the arithmetic wrong on
+  about 17% of generated questions even when the retrieved context and cited
+  shortcut are correct -- the failure is in the LLM's own reasoning on top of
+  good context, not in retrieval. Treat generated quizzes as a draft to
+  review, not a graded answer key, especially for multi-step QA questions.
