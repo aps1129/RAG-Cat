@@ -15,3 +15,7 @@ torch==2.13.0
 # Generation
 requests==2.34.2
 pydantic==2.13.4
+
+# Web UI
+fastapi==0.141.1
+uvicorn[standard]==0.52.3

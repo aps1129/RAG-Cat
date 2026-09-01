@@ -184,7 +184,34 @@ python scripts/eval_retrieval.py --k 5
 
 # 8. generate a quiz  (set GROQ_API_KEY or GEMINI_API_KEY first)
 python scripts/generate.py "time speed distance shortcuts" --n 5
+
+# 9. or launch the web UI instead of the CLI
+GROQ_API_KEY=... uvicorn webapp.main:app --port 8000   # open http://localhost:8000
 ```
+
+---
+
+## Web UI
+
+A thin FastAPI layer over `retrieve.py` + `generate.py` -- no pipeline logic is
+duplicated, just exposed over HTTP. The embedding model and Q/A link index load once
+at startup and are reused across requests rather than reloaded per call.
+
+- Type a topic (or click a suggested one in the sidebar) to generate a quiz.
+- Click an option to see it graded inline -- correct/incorrect highlighted, with the
+  cited shortcut revealed underneath.
+- Every response includes a collapsible **Sources** panel listing exactly which
+  chunks (and, where relevant, which linked solution file) produced the quiz, so any
+  question is traceable back to its source page.
+- Plain grayscale UI by design, in both light and dark mode (follows the OS theme) --
+  color is used only for the correct/incorrect grading state, nowhere else.
+
+```bash
+GROQ_API_KEY=... uvicorn webapp.main:app --port 8000
+```
+
+Then open `http://localhost:8000`. `webapp/main.py` is the whole backend; the frontend
+is plain HTML/CSS/JS in `webapp/static/` with no build step and no framework.
 
 ---
 
@@ -299,9 +326,14 @@ scripts/
   eval_retrieval.py    hit@k against the eval set
   generate.py          retrieval-grounded quiz generation, schema-validated,
                        expands context across linked question/solution files
+  eval_generation.py   generation-quality eval (LLM-as-judge)
+webapp/
+  main.py              FastAPI backend -- wraps retrieve.py + generate.py over HTTP
+  static/              plain HTML/CSS/JS frontend, no build step
 eval/
-  eval_set.json        30 hand-built Q/A pairs
-  results.json         latest eval run
+  eval_set.json         30 hand-built retrieval Q/A pairs
+  results.json          latest retrieval eval run
+  generation_results.json  latest generation-quality eval run
 output/
   extracted/           cached per-document extraction (gitignored)
   qa_links.json        question <-> solution file map (248 pairs)

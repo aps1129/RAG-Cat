@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quiz Generator</title>
+<link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+<div class="app">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-mark">Q</span>
+        <span class="brand-name">Quiz Generator</span>
+      </div>
+      <button id="newChatBtn" class="new-chat-btn" type="button">+ New quiz</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Suggested topics</div>
+      <div class="topic-chips" id="topicChips"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Settings</div>
+      <div class="field">
+        <label for="providerSelect">Model</label>
+        <select id="providerSelect">
+          <option value="groq">Groq</option>
+          <option value="gemini">Gemini</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="countSelect">Questions</label>
+        <select id="countSelect">
+          <option value="1">1</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Connecting&hellip;</span>
+    </div>
+  </aside>
+
+  <main class="chat">
+    <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="Menu">&#9776;</button>
+    <div class="chat-scroll" id="chatScroll">
+      <div class="empty-state" id="emptyState">
+        <h1>What do you want a quiz on?</h1>
+        <p>Type a topic below, or pick a suggestion from the sidebar. Every question is generated
+           from retrieved source material, with citations you can check.</p>
+      </div>
+    </div>
+
+    <div class="composer">
+      <form id="composerForm" autocomplete="off">
+        <input id="topicInput" type="text" placeholder="e.g. time speed distance shortcuts" autocomplete="off" />
+        <button type="submit" id="sendBtn" aria-label="Generate">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M4 12h16M14 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+      <div class="composer-hint">Answers are model-generated from retrieved context and may occasionally be wrong &mdash; verify before relying on them.</div>
+    </div>
+  </main>
+
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
