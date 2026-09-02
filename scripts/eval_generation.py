@@ -37,8 +37,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 from retrieve import Retriever
 from link_qa import load_links as load_qa_links
 from generate import (
-    generate_quiz, load_linked_chunk_index, call_groq, extract_json,
-    GROQ_DEFAULT_MODEL,
+    generate_quiz, load_linked_chunk_index, GROQ_DEFAULT_MODEL, judge_question,
 )
 
 OUT_PATH = Path(__file__).resolve().parent.parent / "eval" / "generation_results.json"
@@ -66,22 +65,6 @@ TOPICS = {
     ],
 }
 
-JUDGE_SYSTEM_PROMPT = """You are a strict CAT exam fact-checker. You will be given a \
-source excerpt, a generated quiz question, its 4 options, the claimed correct \
-answer, and a claimed "shortcut_used".
-
-Judge two things independently:
-1. answer_correct: working the question through yourself from first principles \
-(not just trusting the claim), is "correct_answer" actually the right answer?
-2. shortcut_grounded: does "shortcut_used" name a technique or fact that \
-genuinely appears in the source excerpt, as opposed to a plausible-sounding \
-generic phrase ("elimination method", "basic algebra") that isn't actually \
-tied to anything specific in the excerpt?
-
-Return ONLY this JSON shape, no prose:
-{"answer_correct": true/false, "shortcut_grounded": true/false, \
-"confidence": "high"|"medium"|"low", "notes": "one sentence explaining any problem found"}"""
-
 
 def word_set(text: str) -> set:
     return set(re.findall(r"[a-z]{4,}", text.lower()))
@@ -103,18 +86,6 @@ def grounding_score(question_obj: dict, context: str) -> float:
     return len(overlap) / len(shortcut_words)
 
 
-def judge_question(question_obj: dict, context: str, model: str) -> dict:
-    user = (
-        f"Source excerpts:\n{context}\n\n"
-        f"Generated question: {question_obj['question']}\n"
-        f"Options: {question_obj['options']}\n"
-        f"Claimed correct_answer: {question_obj['correct_answer']}\n"
-        f"Claimed shortcut_used: {question_obj['shortcut_used']}\n"
-    )
-    raw = call_groq(JUDGE_SYSTEM_PROMPT, user, model, temperature=0.0)
-    return extract_json(raw)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -124,6 +95,9 @@ def main():
     parser.add_argument("--model", default=None)
     parser.add_argument("--judge-model", default=None,
                         help="defaults to the same model as --model")
+    parser.add_argument("--no-verify", dest="verify", action="store_false",
+                        help="skip generate.py's own judge+repair pass -- reproduces "
+                             "the pre-fix baseline for before/after comparison")
     args = parser.parse_args()
 
     model = args.model or GROQ_DEFAULT_MODEL
@@ -145,7 +119,8 @@ def main():
             try:
                 out = generate_quiz(topic, args.n_per_topic, args.provider, model,
                                     k=6, temperature=0.4, retriever=retriever,
-                                    qa_links=qa_links, linked_index=linked_index)
+                                    qa_links=qa_links, linked_index=linked_index,
+                                    verify=args.verify, judge_model=judge_model)
             except Exception as e:
                 n_generation_failures += 1
                 print(f"  GENERATION FAILED: {type(e).__name__}: {e}")
@@ -163,9 +138,13 @@ def main():
                 score = grounding_score(q, context_for_judge)
                 distinct_options = len(set(q["options"])) == len(q["options"])
 
+                # A fresh, independent judge call -- deliberately separate from
+                # whatever verify=True already attached to `q` inside
+                # generate_quiz, so a bug in the internal verify/repair loop
+                # can't just report itself as fixed.
                 judge = None
                 try:
-                    judge = judge_question(q, context_for_judge, judge_model)
+                    judge = judge_question(q, context_for_judge, args.provider, judge_model)
                 except Exception as e:
                     print(f"  judge call failed: {type(e).__name__}: {e}")
 
@@ -179,6 +158,8 @@ def main():
                     "distinct_options": distinct_options,
                     "lexical_grounding_score": round(score, 2),
                     "judge": judge,
+                    "pipeline_verified": q.get("verified"),
+                    "pipeline_verification_notes": q.get("verification_notes"),
                 }
                 results.append(rec)
 
@@ -187,10 +168,12 @@ def main():
                 print(f"        distinct_options={distinct_options} lexical_grounding={score:.2f} "
                       f"judge={judge}")
 
-            # Free-tier TPM is tight (8k/min on the model this was built against)
-            # and a generation+judge pair alone can use ~7-8k tokens. The retry
-            # wrapper in generate.py's call_groq handles occasional overshoot,
-            # but pacing proactively here means most topics never need it.
+            # Free-tier TPM is tight (8k/min on the model this was built against).
+            # With verify=True, generate_quiz already makes its own judge (and,
+            # for flagged questions, repair + re-judge) calls per topic, on top
+            # of this eval's independent judge call -- easily 10k+ tokens now.
+            # The retry wrapper in generate.py's call_groq handles occasional
+            # overshoot, but pacing proactively here means most topics don't need it.
             time.sleep(12)
 
     ok_records = [r for r in results if r["status"] == "ok"]
@@ -198,6 +181,9 @@ def main():
     n_shortcut_grounded = sum(1 for r in ok_records if r["judge"] and r["judge"].get("shortcut_grounded"))
     n_distinct = sum(1 for r in ok_records if r["distinct_options"])
     avg_lexical = sum(r["lexical_grounding_score"] for r in ok_records) / len(ok_records) if ok_records else 0
+    n_repaired = sum(1 for r in ok_records
+                     if r.get("pipeline_verification_notes", "") and
+                     r["pipeline_verification_notes"].startswith("repaired"))
 
     summary = {
         "n_generation_attempts": n_attempts,
@@ -207,6 +193,8 @@ def main():
         "judge_shortcut_grounded_rate": round(n_shortcut_grounded / len(ok_records), 3) if ok_records else None,
         "distinct_options_rate": round(n_distinct / len(ok_records), 3) if ok_records else None,
         "avg_lexical_grounding_score": round(avg_lexical, 3),
+        "verify": args.verify,
+        "n_repaired_by_pipeline": n_repaired,
         "model": model,
         "judge_model": judge_model,
         "records": results,
@@ -219,6 +207,7 @@ def main():
     print(f"Judge: shortcut grounded  {summary['judge_shortcut_grounded_rate']}")
     print(f"Distinct options rate     {summary['distinct_options_rate']}")
     print(f"Avg lexical grounding     {summary['avg_lexical_grounding_score']}")
+    print(f"Pipeline verify=True      {summary['verify']}  (repaired: {n_repaired})")
 
     OUT_PATH.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nSaved: {OUT_PATH}")

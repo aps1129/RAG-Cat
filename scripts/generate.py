@@ -49,6 +49,7 @@ CHUNKS_PATH = Path(__file__).resolve().parent.parent / "output" / "chunks.jsonl"
 class QuizQuestion(BaseModel):
     question: str = Field(min_length=10)
     options: List[str] = Field(min_length=4, max_length=4)
+    reasoning: str = Field(min_length=10)
     correct_answer: str
     shortcut_used: str = Field(min_length=5)
 
@@ -86,9 +87,17 @@ one of the 4 options.
 - The question must be solvable from the excerpt content alone.
 - Vary the numbers from the source examples so questions are fresh, but keep the \
 underlying method identical.
+- Fill in "reasoning" BEFORE deciding "correct_answer": work through the arithmetic \
+step by step, plugging in the actual numbers you chose, the way a careful student \
+checking their own work would. Then re-check each step against itself -- this is \
+where models most often slip. "correct_answer" must be the value your own \
+"reasoning" arrives at, not a number that merely looks plausible.
 
-Return ONLY a JSON object of this exact shape, with no prose or markdown:
+Return ONLY a JSON object of this exact shape, with no prose or markdown. Note the \
+key order -- "reasoning" comes before "correct_answer" because you must derive the \
+answer before stating it:
 {"questions": [{"question": "...", "options": ["...","...","...","..."], \
+"reasoning": "step-by-step derivation with the actual numbers ...", \
 "correct_answer": "...", "shortcut_used": "..."}]}"""
 
 
@@ -277,9 +286,121 @@ def extract_json(raw: str) -> dict:
         raise
 
 
+# ----------------------------- verify + repair -----------------------------
+#
+# The reasoning field above cuts arithmetic slips at generation time, but
+# eval_generation.py's LLM-as-judge measured a real residual error rate
+# (~1 in 6 questions, see README "Known limitations"). This closes that loop:
+# every generated question is independently re-derived by a judge call, and
+# anything flagged gets one repair attempt fed the judge's own note before
+# the quiz is returned. This is the same judging prompt eval_generation.py
+# uses for its offline audit -- defined once here so neither copy drifts.
+
+JUDGE_SYSTEM_PROMPT = """You are a strict CAT exam fact-checker. You will be given a \
+source excerpt, a generated quiz question, its 4 options, the claimed correct \
+answer, and a claimed "shortcut_used".
+
+Judge two things independently:
+1. answer_correct: working the question through yourself from first principles \
+(not just trusting the claim), is "correct_answer" actually the right answer?
+2. shortcut_grounded: does "shortcut_used" name a technique or fact that \
+genuinely appears in the source excerpt, as opposed to a plausible-sounding \
+generic phrase ("elimination method", "basic algebra") that isn't actually \
+tied to anything specific in the excerpt?
+
+Return ONLY this JSON shape, no prose:
+{"answer_correct": true/false, "shortcut_grounded": true/false, \
+"confidence": "high"|"medium"|"low", "notes": "one sentence explaining any problem found"}"""
+
+REPAIR_SYSTEM_PROMPT = """You are a meticulous CAT exam question editor. A fact-checker \
+flagged a problem with a quiz question you generated from the given source excerpts. \
+Re-derive the answer step by step from the excerpts, fix whatever is actually wrong \
+(usually an arithmetic slip), and change as little else as possible. Return ONLY the \
+corrected JSON object, no prose or markdown."""
+
+
+def judge_question(question: dict, context: str, provider: str, model: str,
+                   temperature: float = 0.0) -> dict:
+    """Independently re-derive the answer and check shortcut grounding for one
+    generated question. Returns the judge's raw parsed JSON verdict."""
+    caller = call_groq if provider == "groq" else call_gemini
+    user = (
+        f"Source excerpts:\n{context}\n\n"
+        f"Generated question: {question['question']}\n"
+        f"Options: {question['options']}\n"
+        f"Claimed correct_answer: {question['correct_answer']}\n"
+        f"Claimed shortcut_used: {question['shortcut_used']}\n"
+    )
+    raw = caller(JUDGE_SYSTEM_PROMPT, user, model, temperature)
+    return extract_json(raw)
+
+
+def repair_question(question: dict, context: str, notes: str, provider: str,
+                    model: str, temperature: float = 0.3) -> dict:
+    """Ask the model to fix one flagged question in place. Raises if the
+    repaired output doesn't parse or validate -- the caller decides what to
+    do with the original in that case."""
+    caller = call_groq if provider == "groq" else call_gemini
+    user = (
+        f"Source excerpts:\n{context}\n\n"
+        f"You previously generated this question:\n"
+        f"Question: {question['question']}\n"
+        f"Options: {question['options']}\n"
+        f"Reasoning: {question.get('reasoning', '')}\n"
+        f"Correct answer: {question['correct_answer']}\n"
+        f"Shortcut used: {question['shortcut_used']}\n\n"
+        f"Problem found by the fact-checker: {notes}\n\n"
+        f"Return a corrected version of ONLY this one question as a single JSON "
+        f'object (not wrapped in a list): {{"question": "...", '
+        f'"options": ["...","...","...","..."], "reasoning": "...", '
+        f'"correct_answer": "...", "shortcut_used": "..."}}'
+    )
+    raw = caller(REPAIR_SYSTEM_PROMPT, user, model, temperature)
+    data = extract_json(raw)
+    return QuizQuestion.model_validate(data).model_dump()
+
+
+def verify_and_repair(questions: List[dict], context: str, provider: str,
+                      model: str, judge_model: str = None) -> List[dict]:
+    """Judge every question; give the ones flagged as wrong one repair
+    attempt, then re-judge the repair. Every returned question carries
+    'verified' (True/False/None) and 'verification_notes' so callers can
+    surface residual risk rather than silently trusting the fix."""
+    judge_model = judge_model or model
+    out = []
+    for q in questions:
+        try:
+            verdict = judge_question(q, context, provider, judge_model)
+        except Exception as e:
+            result = dict(q, verified=None, verification_notes=f"judge call failed: {e}")
+            out.append(result)
+            continue
+
+        if verdict.get("answer_correct"):
+            out.append(dict(q, verified=True, verification_notes=verdict.get("notes", "")))
+            continue
+
+        try:
+            repaired = repair_question(q, context, verdict.get("notes", ""), provider, model)
+            recheck = judge_question(repaired, context, provider, judge_model)
+        except Exception as e:
+            out.append(dict(q, verified=False,
+                            verification_notes=f"flagged ({verdict.get('notes', '')}); repair failed: {e}"))
+            continue
+
+        if recheck.get("answer_correct"):
+            out.append(dict(repaired, verified=True,
+                            verification_notes=f"repaired after flag: {verdict.get('notes', '')}"))
+        else:
+            out.append(dict(repaired, verified=False,
+                            verification_notes=f"still flagged after repair: {recheck.get('notes', '')}"))
+    return out
+
+
 def generate_quiz(topic: str, n: int, provider: str, model: str, k: int,
                   temperature: float, retriever: Retriever,
-                  qa_links: dict = None, linked_index: dict = None) -> dict:
+                  qa_links: dict = None, linked_index: dict = None,
+                  verify: bool = True, judge_model: str = None) -> dict:
     hits = retriever.search(topic, k=k)
     if not hits:
         raise RuntimeError(f"No chunks retrieved for topic: {topic!r}")
@@ -293,13 +414,17 @@ def generate_quiz(topic: str, n: int, provider: str, model: str, k: int,
 
     data = extract_json(raw)
     quiz = Quiz.model_validate(data)
+    questions = [q.model_dump() for q in quiz.questions]
+
+    if verify:
+        questions = verify_and_repair(questions, context, provider, model, judge_model)
 
     return {
         "topic": topic,
         "provider": provider,
         "model": model,
         "retrieved_context": provenance,
-        "questions": [q.model_dump() for q in quiz.questions],
+        "questions": questions,
     }
 
 
@@ -313,6 +438,10 @@ def main():
     parser.add_argument("--k", type=int, default=6, help="chunks to retrieve as context")
     parser.add_argument("--temperature", type=float, default=0.4)
     parser.add_argument("--out", default=None, help="write the quiz JSON to this path")
+    parser.add_argument("--no-verify", dest="verify", action="store_false",
+                        help="skip the judge+repair pass (faster, cheaper, less accurate)")
+    parser.add_argument("--judge-model", default=None,
+                        help="model used to verify/repair; defaults to --model")
     args = parser.parse_args()
 
     model = args.model or (GROQ_DEFAULT_MODEL if args.provider == "groq" else GEMINI_DEFAULT_MODEL)
@@ -327,7 +456,8 @@ def main():
 
     try:
         result = generate_quiz(args.topic, args.n, args.provider, model, args.k,
-                               args.temperature, retriever, qa_links, linked_index)
+                               args.temperature, retriever, qa_links, linked_index,
+                               verify=args.verify, judge_model=args.judge_model)
     except ValidationError as e:
         print(f"\nModel returned JSON that failed schema validation:\n{e}", file=sys.stderr)
         sys.exit(2)
@@ -347,6 +477,9 @@ def main():
             mark = "*" if opt == q["correct_answer"] else " "
             print(f"   {mark} {chr(65 + j)}. {opt}")
         print(f"   shortcut: {q['shortcut_used']}")
+        if "verified" in q:
+            tag = {True: "verified", False: "UNVERIFIED", None: "verification skipped"}[q["verified"]]
+            print(f"   [{tag}] {q.get('verification_notes', '')}")
 
     if args.out:
         Path(args.out).write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")

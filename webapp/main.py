@@ -55,6 +55,7 @@ class GenerateRequest(BaseModel):
     n: int = Field(default=3, ge=1, le=8)
     provider: Literal["groq", "gemini"] = "groq"
     k: int = Field(default=6, ge=2, le=12)
+    verify: bool = Field(default=True, description="judge + repair generated answers before returning")
 
 
 @app.post("/api/generate")
@@ -65,6 +66,7 @@ def api_generate(req: GenerateRequest):
             topic=req.topic, n=req.n, provider=req.provider, model=model, k=req.k,
             temperature=0.4, retriever=_state["retriever"],
             qa_links=_state["qa_links"], linked_index=_state["linked_index"],
+            verify=req.verify,
         )
         return result
     except ValidationError as e:

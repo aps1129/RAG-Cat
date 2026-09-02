@@ -186,6 +186,13 @@ function renderQuiz(container, data) {
     card.querySelector(".ans-text").textContent = q.correct_answer;
     card.querySelector(".sc-text").textContent = q.shortcut_used;
 
+    if (q.verified === false) {
+      const warn = document.createElement("div");
+      warn.className = "verify-warn";
+      warn.textContent = "Could not be fully verified -- double-check this one.";
+      card.querySelector(".reveal").appendChild(warn);
+    }
+
     container.appendChild(card);
   });
 

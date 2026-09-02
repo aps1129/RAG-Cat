@@ -224,6 +224,7 @@ output. Every question is validated against a Pydantic schema before it is retur
 {
   "question": "...",
   "options": ["...", "...", "...", "..."],
+  "reasoning": "...",
   "correct_answer": "...",
   "shortcut_used": "..."
 }
@@ -236,6 +237,36 @@ prose-wrapped JSON are recovered rather than treated as failures.
 
 Output also carries the `retrieved_context` (source file, page, similarity score) that
 produced it, so any generated question can be traced back to the page it came from.
+
+### Catching arithmetic errors
+
+The generation eval below originally measured the model getting arithmetic wrong on
+about 1 in 6 questions even when retrieval and the cited shortcut were correct. Two
+fixes address that, both in `generate.py`:
+
+1. **`reasoning` is a required schema field, ordered before `correct_answer`.** The
+   system prompt requires the model to work the arithmetic step by step in `reasoning`
+   before committing to `correct_answer`, instead of jumping straight to an answer with
+   no scratch space. This is free -- no extra API call -- and targets exactly the
+   failure mode the eval caught (correct method, sloppy arithmetic on top of it).
+2. **Every question is judged and, if flagged, repaired.** `verify_and_repair()` sends
+   each generated question to the same fact-checking prompt `eval_generation.py` uses
+   (`judge_question`, moved into `generate.py` so both share one copy): re-derive the
+   answer from the source excerpt from scratch and check whether `correct_answer`
+   actually holds up. A question the judge flags gets one repair attempt
+   (`repair_question`) fed the judge's own note, then one re-check. The result carries
+   `verified: true/false/null` and `verification_notes` on every question, so a question
+   that still doesn't check out after repair isn't silently shipped as if it were fine --
+   the web UI flags it inline, and the CLI prints `[UNVERIFIED]`.
+
+This runs by default (`verify=True` in `generate_quiz`, on in the web UI and CLI); pass
+`--no-verify` to `generate.py` or `eval_generation.py` to skip it. Two caveats worth
+being honest about: it roughly doubles best-case token usage per question (a judge call,
+plus a repair + re-judge pair for anything flagged), so expect it to hit the Groq
+free-tier rate limit more often; and by default the judge is the same model that did the
+generation, so a mistake the model is consistently confident about can pass its own
+check -- pass `--judge-model` (or run the judge on the other provider) for a more
+independent read when both API keys are available.
 
 ---
 
@@ -285,7 +316,7 @@ re-derive the answer from the same source excerpt from scratch and judge whether
 `correct_answer` actually holds up and whether `shortcut_used` names something that
 genuinely appears in the source rather than a plausible-sounding invention.
 
-| Metric | Result |
+| Metric | Result (pre-fix baseline) |
 |---|---:|
 | Generation attempts (schema-valid JSON) | 12/12 (100%) |
 | Judge: answer actually correct | 10/12 (83%) |
@@ -302,6 +333,16 @@ found two real problems, which is the point of running it:
   "Assumption Identification" as `shortcut_used` -- a category label, not a technique
   that appears in the source. This is the VARC generic-shortcut limitation below,
   caught empirically rather than just predicted.
+
+**This table is the baseline that motivated the fix in "Catching arithmetic errors"
+above (`reasoning` field + judge/repair loop), not its result** -- it predates that
+change. `eval_generation.py` now defaults to running with the fix on
+(`verify=True`, matching what the CLI and web UI ship), so re-running it
+(`python eval_generation.py --topics-per-section 4 --n-per-topic 1`) reports the
+current, post-fix numbers, including `n_repaired_by_pipeline` (how many questions the
+judge/repair loop actually touched) and, per record, `pipeline_verified` alongside the
+eval's own independent `judge` verdict. Pass `--no-verify` to reproduce the table above
+for comparison. `eval/generation_results.json` holds whichever run was saved last.
 
 Practical takeaway: **treat generated QA/DILR questions as generally reliable and
 generated VARC questions as needing a read-through** -- consistent with VARC material
@@ -357,9 +398,16 @@ output/
   come out generic ("process of elimination") rather than citing something
   specific from the source, simply because the source itself is more
   explanatory than technique-based for this section.
-- **Generation has a real, measured error rate: ~1 in 6.** `eval_generation.py`
-  (see Generation eval above) found the model gets the arithmetic wrong on
-  about 17% of generated questions even when the retrieved context and cited
-  shortcut are correct -- the failure is in the LLM's own reasoning on top of
-  good context, not in retrieval. Treat generated quizzes as a draft to
-  review, not a graded answer key, especially for multi-step QA questions.
+- **Generation had a measured arithmetic error rate of ~1 in 6, now mitigated
+  but not eliminated.** `eval_generation.py` (see Generation eval above) found the
+  model got arithmetic wrong on ~17% of generated questions even with correct
+  retrieved context and a correctly cited shortcut -- the failure was in the LLM's
+  own reasoning on top of good context, not in retrieval. `generate.py` now requires
+  a step-by-step `reasoning` field before `correct_answer`, and independently
+  judges + repairs every question before returning it (see "Catching arithmetic
+  errors" above) -- flagged-and-fixed questions carry `verified: true`, and a
+  question that still can't be verified after one repair attempt is marked
+  `verified: false` (surfaced in the web UI) rather than shipped silently. This
+  narrows the gap but the judge is an LLM checking another LLM's work, not ground
+  truth, so still treat generated quizzes as a draft to review, especially any
+  question flagged unverified.

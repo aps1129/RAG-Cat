@@ -365,6 +365,17 @@ body {
   color: var(--text-primary);
 }
 
+.verify-warn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger-text);
+  font-size: 12px;
+}
+
 .sources {
   max-width: 760px;
   margin: 4px 0 0;
